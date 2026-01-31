@@ -1,14 +1,21 @@
-Coin World
-Coin World is a fast, secure, and professional platform to discover and swap newly launched Solana tokens and high-volume meme coins. Track live prices and swap instantly using the Jupiter API.
-Features
-Browse newly launched Solana tokens and popular meme coins
-Search by name, symbol, or contract address
-Estimate swaps in real-time (SOL → token)
-Safe wallet connection: Phantom, Solflare, Backpack
-Live token liquidity, 24h volume, and price change
-How it Works
-Users can explore tokens from the dashboard, check price and liquidity, and swap safely. All swap operations are powered by the Jupiter API, ensuring high-volume, low-slippage transactions on Solana.
-Wallet for platform integration: 33LGNbhTCADQiNwj1CPZrfNfhe6xrJucEV4oxV39PGwg
-Powered by the Jupiter API.
-License
-MIT License. See LICENSE for details.
+
+
+Copyright (c) 2026 O. Madu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
