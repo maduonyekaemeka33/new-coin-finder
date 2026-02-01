@@ -1,21 +1,41 @@
+# Jupiter Swap Web App
 
+A web interface to swap Solana tokens directly via Jupiter, with Phantom Wallet integration.
 
-Copyright (c) 2026 O. Madu
+## Features
+- Connect Phantom Wallet
+- Get swap quotes from Jupiter
+- Execute token swaps securely
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## Serverless Functions
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+### api/swap.js
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+**Purpose:** Serverless endpoint to execute token swaps via Jupiter on the Solana blockchain.
+
+### Description
+This serverless function handles the backend logic for executing Solana token swaps using the Jupiter API. It receives a swap route and the user’s public key from the frontend, constructs the swap transaction, and returns it in a format the user’s wallet (e.g., Phantom) can sign and send to the blockchain.
+
+### How it works
+1. Accepts only **POST requests**. Other methods return `405 Method Not Allowed`.
+2. Expects a JSON body with:
+   - `route` → the swap route from Jupiter’s quote API
+   - `userPublicKey` → the wallet public key of the user
+3. Calls Jupiter’s swap API endpoint (`https://quote-api.jup.ag/v6/swap`) with `wrapUnwrapSOL: true`.
+4. Returns the **serialized swap transaction** (`swapTransaction`) to the frontend.
+5. **No private keys or funds** are stored on the server — the user must sign the transaction in their wallet.
+
+### Security Notes
+- Non-custodial: this server cannot move funds by itself.
+- All transactions require explicit user approval via their wallet.
+- The server only generates the transaction; signing happens in the browser.
+
+### Usage Example
+```js
+const response = await fetch("/api/swap", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ route, userPublicKey })
+});
+
+const { swapTransaction } = await response.json();
