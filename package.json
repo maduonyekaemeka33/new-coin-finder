@@ -1,0 +1,19 @@
+{
+  "name": "new-coin-finder",
+  "version": "1.0.0",
+  "description": "New Coin Finder – Discover the latest high-volume meme coins across Solana and Ethereum. Track live charts and swap tokens securely using your wallet. Earn referral fees with Jupiter integration.",
+  "keywords": ["new coin", "meme coin", "token swap", "Solana", "Ethereum", "live crypto charts", "Jupiter swap", "high-volume tokens"],
+  "main": "src/index.js",
+  "dependencies": {
+    "@solana/web3.js": "^1.80.0",
+    "@jup-ag/core": "^2.0.0",
+    "@solana/wallet-adapter-react": "^0.15.16",
+    "@solana/wallet-adapter-wallets": "^0.15.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  }
+}
