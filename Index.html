@@ -1,77 +1,43 @@
-import requests
-import time
+<div id="trending-tokens"></div>
 
-def get_top_20_movers():
-    api_key = "YOUR_API_KEY_HERE"  # Replace with your Birdeye API key (free signup at docs.birdeye.so)
+<script>
+async function fetchTrendingTokens() {
+  const apiKey = "YOUR_BIRDEYE_API_KEY";  // Replace with your key
+  const url = "https://public-api.birdeye.so/defi/v3/token/list?sort_by=price_change_24h&sort_type=desc&offset=0&limit=10";
 
-    url = "https://public-api.birdeye.so/defi/v3/token/list"
-    
-    params = {
-        "sort_by": "price_change_24h",      # Sort by 24h % change
-        "sort_type": "desc",                # Highest gains first
-        "offset": 0,
-        "limit": 20,                        # Top 20
-        "ui_amount_mode": "scaled"          # Human-readable amounts
-    }
-    
-    headers = {
+  try {
+    const res = await fetch(url, {
+      headers: {
         "accept": "application/json",
-        "x-chain": "solana",                # Solana tokens only
-        "X-API-KEY": api_key
-    }
-    
-    try:
-        response = requests.get(url, params=params, headers=headers)
-        response.raise_for_status()  # Raise error for bad HTTP status
-        
-        data = response.json()
-        
-        if not data.get("success", False):
-            print("API returned error:", data.get("message", "Unknown issue"))
-            return
-        
-        items = data["data"].get("items", [])
-        
-        if not items:
-            print("No tokens returned. Check API key, limits, or try again later.")
-            return
-        
-        # Timestamp for "daily" reference
-        current_time = time.strftime("%Y-%m-%d %H:%M:%S UTC")
-        print(f"Top 20 Solana Tokens by 24h % Price Change (Gainers) - {current_time}\n")
-        print("Note: Data from Birdeye (similar to Phantom trending). Huge swings common in memecoins.\n")
-        
-        for rank, token in enumerate(items, 1):
-            symbol = token.get("symbol", "N/A")
-            name = token.get("name", "N/A")
-            change_24h = token.get("price_change_24h", "N/A")  # % change
-            market_cap = token.get("market_cap", "N/A")
-            liquidity = token.get("liquidity", "N/A")
-            volume_24h = token.get("volume_24h_usd", "N/A")
-            
-            print(f"{rank}. {symbol} ({name})")
-            print(f"   24h Change: {change_24h}%")
-            
-            if isinstance(market_cap, (int, float)):
-                print(f"   Market Cap: ${market_cap:,.0f}")
-            else:
-                print(f"   Market Cap: {market_cap}")
-            
-            if isinstance(liquidity, (int, float)):
-                print(f"   Liquidity: ${liquidity:,.0f}")
-            
-            if isinstance(volume_24h, (int, float)):
-                print(f"   24h Volume: ${volume_24h:,.0f}")
-            
-            print("-" * 50)
-    
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-        if response:
-            print("Response status:", response.status_code)
-            print("Response text:", response.text[:500])  # Truncated for debug
-    except Exception as e:
-        print(f"Unexpected error: {e}")
+        "x-chain": "solana",
+        "X-API-KEY": apiKey
+      }
+    });
 
-if __name__ == "__main__":
-    get_top_20_movers()
+    const data = await res.json();
+    if (!data.success) return console.error("API error:", data.message);
+
+    const items = data.data.items;
+    const container = document.getElementById("trending-tokens");
+    container.innerHTML = "<h3>Top 10 Trending Solana Tokens</h3>";
+    
+    items.forEach((token, i) => {
+      const changeColor = token.price_change_24h >= 0 ? "green" : "red";
+      container.innerHTML += `
+        <div style="margin-bottom:10px; border-bottom:1px solid #ddd; padding:5px;">
+          <strong>${i+1}. ${token.symbol} (${token.name})</strong><br>
+          24h Change: <span style="color:${changeColor}">${token.price_change_24h}%</span><br>
+          Price: $${token.price_usd}<br>
+          Market Cap: $${token.market_cap.toLocaleString()}
+        </div>
+      `;
+    });
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
+}
+
+// Fetch every 5 minutes
+fetchTrendingTokens();
+setInterval(fetchTrendingTokens, 300000);
+          </script>
